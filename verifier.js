@@ -27,7 +27,8 @@ app.post("/verifyVC", async function(req,res) {
     const {vc} = req.body.data;
     const vr = await verifyVC(vc);
     console.log("Verification result: "+JSON.stringify(vr));
-    res.json(vr);
+    if (JSON.stringify(vr)==="false") res.json("The VC has been revoked!");
+    else res.json("The VC is valid!");
   })
 
 app.get("/", function(req, res) {
