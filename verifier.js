@@ -1,13 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 5001;
+//const port = 5001;
 const { verifyVC } = require('./verifyVC');
+const https = require('https')
+const fs = require('fs')
+
+var privateKey  = fs.readFileSync('./HTTPS/verifier.key', 'utf8');
+var certificate = fs.readFileSync('./HTTPS/verifier.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost", "http://localhost:3000", "http://localhost:3001"],
+    origin: ["https://localhost", "https://localhost:3000", "https://localhost:3001"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: [
@@ -35,6 +41,15 @@ app.get("/", function(req, res) {
     console.log("GET received")
 })
 
+/*
 app.listen(port, () => {
   console.log(`Verifier started on port : ${port}`);
 });
+*/
+
+const port = 8444;
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(port,()=>{
+  console.log(`Verifier is listening at port ${port}`)
+})
+

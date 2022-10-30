@@ -2,9 +2,15 @@ const { verifyCredential, isCredentialValid, IdentityManager } = require("@tangl
 const {Credential, Document} = require("@iota/identity-wasm/node")
 const path = require("path");
 const axios = require("axios");
+const https=require("https");
+const instance = axios.create({
+    httpsAgent: new https.Agent({  
+      rejectUnauthorized: false
+    })
+  });
 const verifyVC = async (vc) => {
-    const ddo = await axios.post(
-        "http://127.0.0.1:5000/getDDO",
+    const ddo = await instance.post(
+        "https://127.0.0.1:8443/getDDO",
         {
             headers: {
                 "Content-Type": "application/json",
