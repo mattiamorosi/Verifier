@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-//const port = 5001;
 const { verifyVC } = require('./verifyVC');
 const https = require('https')
 const fs = require('fs')
@@ -32,7 +31,6 @@ app.post("/verifyVC", async function(req,res) {
     console.log("POST /verifyVC received");
     const {vc} = req.body.data;
     const vr = await verifyVC(vc);
-    console.log("Verification result: "+JSON.stringify(vr));
     if (JSON.stringify(vr)==="false") res.json("The VC has been revoked!");
     else res.json("The VC is valid!");
   })
@@ -40,12 +38,6 @@ app.post("/verifyVC", async function(req,res) {
 app.get("/", function(req, res) {
     console.log("GET received")
 })
-
-/*
-app.listen(port, () => {
-  console.log(`Verifier started on port : ${port}`);
-});
-*/
 
 const port = 8444;
 var httpsServer = https.createServer(credentials, app);
