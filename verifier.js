@@ -31,7 +31,7 @@ app.post("/verifyVC", async function(req,res) {
     console.log("POST /verifyVC received");
     const {vc} = req.body.data;
     const vr = await verifyVC(vc);
-    if (vc === null) res.json("It is not possible to retrieve the DID Document of the issuer");
+    if (vr === null) res.json("It is not possible to retrieve the DID Document of the issuer");
     else if (JSON.stringify(vr)==="false") res.json("The VC has been revoked!");
     else res.json("The VC is valid!");
   })
